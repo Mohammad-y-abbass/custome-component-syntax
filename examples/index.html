@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Frontend Framework Example</title>
+  </head>
+  <body>
+    <!-- Container element for rendering components -->
+    <div id="app"></div>
+
+    <!-- Include the compiled JavaScript file -->
+    <script type="module">
+      import { Component } from '../dist/index.js';
+
+      // Create an instance of the Component class
+      const component = new Component();
+
+      // Get the root element where components will be rendered
+      const rootElement = document.getElementById('app');
+
+      // Render the component
+      rootElement.appendChild(component.render());
+    </script>
+  </body>
+</html>

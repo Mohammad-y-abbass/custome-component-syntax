@@ -1,9 +1,10 @@
-class Component {
+export class Component {
   constructor() {}
 
   render(): HTMLElement {
-    return document.createElement('div');
+    const element = document.createElement('div');
+    element.innerHTML = '<h1>Hello, World!</h1>';
+    return element;
   }
 }
 
-export default Component;
