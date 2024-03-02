@@ -1,38 +1,13 @@
 {
   "compilerOptions": {
-    // Specifies the ECMAScript target version for the generated JavaScript files.
-    // In this case, "es2016" means that the TypeScript compiler will generate JavaScript code compatible with ECMAScript 2016 (ES7).
     "target": "es2016",
-
-    // Specifies the module system used in the generated JavaScript files.
-    // "ESNext" indicates that the TypeScript compiler should emit ECMAScript modules (ESM).
-    // ESNext is a placeholder that allows the compiler to use the latest module system supported by the runtime environment (e.g., ES6 modules in modern browsers).
     "module": "ESNext",
-
-    // Specifies the output directory for compiled JavaScript files.
-    // All generated JavaScript files will be placed in the specified directory ("./dist" in this case).
+    "moduleResolution": "node", // Set module resolution to "node"
     "outDir": "./dist",
-
-    // Specifies the root directory for input files.
-    // This option tells the TypeScript compiler where to find the source files.
-    // All input files (e.g., .ts files) should be located within the specified root directory ("./src" in this case).
     "rootDir": "./src",
-
-    // Enables all strict type-checking options.
-    // When "strict" is set to true, TypeScript applies strict checks for type-related rules,
-    // which helps catch common programming errors during development.
     "strict": true,
-
-    // Skips type checking all .d.ts files (declaration files).
-    // This option can improve compilation performance by skipping type checking for external type declaration files (e.g., from npm packages) if they're not needed.
     "skipLibCheck": true,
-
-    // Enables additional JavaScript emitted to ease support for importing CommonJS modules.
-    // This option enables compatibility with CommonJS modules (used in Node.js ecosystem) when importing modules with default exports in ECMAScript modules.
     "esModuleInterop": true,
-
-    // Ensures that file names are consistently cased in imports.
-    // This option helps prevent issues related to file name casing differences between operating systems (e.g., Windows vs. Unix-based systems).
     "forceConsistentCasingInFileNames": true
   }
 }
