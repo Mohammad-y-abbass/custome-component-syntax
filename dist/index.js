@@ -1,7 +1,6 @@
-import { lexer } from './core/lexer/lexer.js';
-import { render } from './core/renderer/renderer.js';
+import { lexer } from './lexer/lexer.js';
+import { render } from './renderer/renderer.js';
 // Example usage
-const input = '@MyComponent = {<h1>hello</h1>}';
+const input = '@Hello = {<h1>hello</h1>}';
 const tokens = lexer(input);
 render(tokens);
-console.log(tokens);
