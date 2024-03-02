@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "ESNext",
-    "moduleResolution": "node", // Set module resolution to "node"
+    "moduleResolution": "node",
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,

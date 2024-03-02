@@ -1,83 +1,70 @@
-// lexer.ts
-class Lexer {
-    constructor(input) {
-        this.position = 0; // Current position in the input code
-        this.input = input;
-    }
-    lex() {
-        const tokens = []; // Array to store generated tokens
-        // Loop through the input code until the end
-        while (this.position < this.input.length) {
-            const char = this.input[this.position]; // Current character
-            // Skip whitespace characters
-            if (/\s/.test(char)) {
-                this.position++; // Move to the next character
-                continue; // Skip to the next iteration
-            }
-            // Recognize token types and generate tokens
-            if (char === '@') {
-                // ComponentName: Recognize @ComponentName
-                tokens.push({
-                    type: 'ComponentName',
-                    value: this.readWhile(/[a-zA-Z_]/),
-                });
-            }
-            else if (char === 'p') {
-                if (this.input.slice(this.position, this.position + 5) === 'props') {
-                    // PropsKeyword: Recognize props keyword
-                    tokens.push({ type: 'PropsKeyword', value: 'props' });
-                    this.position += 5; // Move past the 'props' keyword
-                }
-                else {
-                    // PropName: Recognize prop name
-                    tokens.push({ type: 'PropName', value: this.readWhile(/[a-zA-Z_]/) });
-                }
-            }
-            else if (char === ':') {
-                // PropType: Recognize prop type
-                tokens.push({ type: 'PropType', value: this.readWhile(/[a-zA-Z_]/) });
-            }
-            else if (char === '{' || char === '}') {
-                // ComponentBody: Recognize component body
-                tokens.push({ type: 'ComponentBody', value: char });
-            }
-            this.position++; // Move to the next character
+"use strict";
+// Define token types
+var TokenType;
+(function (TokenType) {
+    TokenType["ComponentDeclaration"] = "ComponentDeclaration";
+    TokenType["LCurly"] = "LCurly";
+    TokenType["RCurly"] = "RCurly";
+    TokenType["HTMLContent"] = "HTMLContent";
+    TokenType["WhiteSpace"] = "WhiteSpace";
+})(TokenType || (TokenType = {}));
+// Define lexer function
+function lexer(input) {
+    const tokens = [];
+    // Define token patterns with regular expressions
+    const patterns = [
+        { type: TokenType.ComponentDeclaration, regex: /@\S+\s*=\s*{/g },
+        { type: TokenType.LCurly, regex: /{/g },
+        { type: TokenType.RCurly, regex: /}/g },
+        { type: TokenType.HTMLContent, regex: /<[^>]+>([^<]*)<\/[^>]+>/g }, // Updated regex
+    ];
+    // Iterate over token patterns
+    patterns.forEach(({ type, regex }) => {
+        // Match tokens using regular expressions
+        const matches = input.match(regex);
+        if (matches) {
+            // Push matched tokens to the tokens array
+            matches.forEach((match) => tokens.push({ type, value: match }));
         }
-        return tokens; // Return the array of generated tokens
-    }
-    // Helper function to read characters while a given predicate is true
-    readWhile(predicate) {
-        let result = '';
-        while (this.position < this.input.length &&
-            predicate.test(this.input[this.position])) {
-            result += this.input[this.position]; // Append the current character to the result
-            this.position++; // Move to the next character
+    });
+    return tokens;
+}
+// Render function
+function render(tokens) {
+    const container = document.getElementById('container');
+    if (!container)
+        return;
+    let componentContent = null;
+    tokens.forEach((token) => {
+        switch (token.type) {
+            case TokenType.ComponentDeclaration:
+                // Initialize componentContent when encountering ComponentDeclaration
+                componentContent = '';
+                break;
+            case TokenType.LCurly:
+                // Ignore left curly brace
+                break;
+            case TokenType.RCurly:
+                // Ignore right curly brace
+                break;
+            case TokenType.HTMLContent:
+                // Append HTML content to componentContent when inside a component declaration
+                if (componentContent !== null) {
+                    componentContent += token.value;
+                }
+                break;
+            default:
+                // Ignore other token types
+                break;
         }
-        return result; // Return the accumulated characters
+    });
+    // Render componentContent if it contains HTML content
+    if (componentContent !== null) {
+        container.insertAdjacentHTML('beforeend', componentContent);
     }
 }
-const inputCode = `
-@ComponentName
-props {
-  propName1: PropType1,
-  propName2: PropType2,
-}
-{
-  // Component body
-}
-
-@AnotherComponent
-props {
-  // No props defined
-}
-{
-  // Component body with no props
-}
-`;
-const lexer = new Lexer(inputCode);
-// Tokenize input code
-const tokens = lexer.lex();
-// Output tokens for analysis
-console.log(tokens);
-// TODO: Analyze tokens to verify lexer functionality
-export default Lexer;
+// Example usage
+const input = '@MyComponent = {<h1 style="color: red">hello</h1>}';
+const tokens = lexer(input);
+console.log(tokens); // Ensure tokens are correct
+render(tokens);

@@ -2,25 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Frontend Framework Example</title>
+    <title>Lexer Test</title>
   </head>
   <body>
-    <!-- Container element for rendering components -->
-    <div id="app"></div>
+    <div id="container"></div>
+    <!-- Include TypeScript compiler -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typescript/4.6.2/typescript.min.js"></script>
+    <!-- Include your TypeScript file -->
+    <script src="../dist/core/parser/lexer.js" type="module">
+            import { lexer } from './lexer.js'; // Import the lexer function
 
-    <!-- Include the compiled JavaScript file -->
-    <script type="module">
-      import { Component } from '../dist/index.js';
+      const input = '@MyComponent = { <h1>Hello</h1> }';
+      const tokens = lexer(input);
 
-      // Create an instance of the Component class
-      const component = new Component();
+      const componentContainer = document.getElementById('componentContainer');
 
-      // Get the root element where components will be rendered
-      const rootElement = document.getElementById('app');
-
-      // Render the component
-      rootElement.appendChild(component.render());
+      // Iterate over tokens and render components
+      tokens.forEach(token => {
+          const component = document.createElement('div');
+          component.innerHTML = token.value; // Render HTML content
+          componentContainer.appendChild(component);
+      });
+    </script>
+    <script>
+      // Your TypeScript code here
     </script>
   </body>
 </html>
